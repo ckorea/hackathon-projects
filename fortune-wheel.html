@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Fortune Wheel</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hot-pink: #ff69b4;
+            --magenta: #ff1493;
+            --baby-pink: #ffb6c1;
+            --pale-pink: #ffd1dc;
+            --barbie-pink: #e0218a;
+            --light-pink: #fff0f5;
+            --silver: #c0c0c0;
+            --chrome: #e8e8e8;
+            --lilac: #dda0dd;
+            --lavender: #e6e6fa;
+            --white: #ffffff;
+            --text-pink: #c71585;
+            --text-dark: #8b008b;
+        }
+
+        body {
+            font-family: 'Comfortaa', 'Quicksand', cursive;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+            background: linear-gradient(135deg,
+                #ffb6c1 0%,
+                #ff69b4 25%,
+                #ff1493 50%,
+                #ff69b4 75%,
+                #ffb6c1 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Glitter overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(2px 2px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(2px 2px at 160px 120px, white, transparent),
+                radial-gradient(1px 1px at 180px 20px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(2px 2px at 200px 90px, white, transparent),
+                radial-gradient(1px 1px at 80px 110px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 110px 10px, white, transparent);
+            background-size: 200px 200px;
+            animation: glitterShimmer 4s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes glitterShimmer {
+            0% { opacity: 0.5; }
+            25% { opacity: 1; }
+            50% { opacity: 0.6; }
+            75% { opacity: 0.9; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Sparkle stars */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2;
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
+
+        .sparkle::before {
+            content: '✦';
+            color: white;
+            text-shadow: 0 0 10px white, 0 0 20px var(--hot-pink), 0 0 30px var(--magenta);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Floating hearts */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatHeart linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--white) 0%, var(--pale-pink) 50%, var(--silver) 100%);
+            color: var(--barbie-pink);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow:
+                0 4px 15px rgba(255, 20, 147, 0.4),
+                0 0 20px rgba(255, 105, 180, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 1),
+                inset 0 -2px 4px rgba(255, 105, 180, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--white);
+            text-shadow:
+                0 0 10px var(--hot-pink),
+                0 0 20px var(--magenta),
+                0 0 30px var(--hot-pink),
+                0 0 40px var(--magenta),
+                2px 2px 0 var(--barbie-pink);
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            color: var(--white);
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+            text-shadow: 0 0 10px var(--hot-pink), 1px 1px 0 var(--magenta);
+        }
+
+        /* Y2K Card Style */
+        .y2k-card {
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(255, 182, 193, 0.9) 50%,
+                rgba(255, 192, 203, 0.95) 100%
+            );
+            border-radius: 24px;
+            border: 3px solid var(--white);
+            box-shadow:
+                0 8px 32px rgba(255, 20, 147, 0.3),
+                0 0 0 1px rgba(255, 105, 180, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 1),
+                inset 0 -4px 12px rgba(255, 105, 180, 0.2);
+        }
+
+        /* Zodiac Selection */
+        .zodiac-section {
+            padding: 35px;
+            margin-bottom: 30px;
+        }
+
+        .zodiac-section h2 {
+            color: var(--text-pink);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-shadow: 0 1px 0 white;
+        }
+
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .zodiac-btn {
+            background: linear-gradient(180deg,
+                var(--white) 0%,
+                var(--pale-pink) 50%,
+                var(--baby-pink) 100%
+            );
+            border: 2px solid var(--white);
+            border-radius: 16px;
+            padding: 14px 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 12px rgba(255, 20, 147, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 1),
+                inset 0 -2px 6px rgba(255, 105, 180, 0.3);
+        }
+
+        /* Chrome shine effect */
+        .zodiac-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.6),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+
+        .zodiac-btn:hover::before {
+            left: 100%;
+        }
+
+        .zodiac-btn span:not(.emoji-display) {
+            font-size: 0.7rem;
+            color: var(--text-pink);
+            margin-top: 5px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .zodiac-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: var(--hot-pink);
+            box-shadow:
+                0 8px 24px rgba(255, 20, 147, 0.4),
+                0 0 20px rgba(255, 105, 180, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 1);
+        }
+
+        .zodiac-btn.selected {
+            background: linear-gradient(180deg,
+                var(--hot-pink) 0%,
+                var(--magenta) 50%,
+                var(--barbie-pink) 100%
+            );
+            border-color: var(--white);
+            box-shadow:
+                0 0 30px rgba(255, 20, 147, 0.6),
+                0 0 60px rgba(255, 105, 180, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .zodiac-btn.selected span:not(.emoji-display) {
+            color: var(--white);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .zodiac-btn .emoji-display {
+            filter: drop-shadow(0 2px 4px rgba(255, 20, 147, 0.3));
+            transition: all 0.3s;
+        }
+
+        .zodiac-btn:hover .emoji-display,
+        .zodiac-btn.selected .emoji-display {
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+            transform: scale(1.1);
+        }
+
+        /* Wheel Section */
+        .wheel-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .wheel-section.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .selected-zodiac {
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 2px solid var(--white);
+            border-radius: 50px;
+            padding: 12px 28px;
+            margin-bottom: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow:
+                0 4px 20px rgba(255, 20, 147, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 1);
+        }
+
+        .selected-zodiac .emoji {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 6px rgba(255, 20, 147, 0.4));
+        }
+
+        .selected-zodiac .name {
+            color: var(--text-pink);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+        .change-btn {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            border: 2px solid var(--white);
+            color: var(--white);
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: 'Comfortaa', cursive;
+            padding: 6px 14px;
+            border-radius: 15px;
+            margin-left: 5px;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.4);
+        }
+
+        .change-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.5);
+        }
+
+        /* The Wheel */
+        .wheel-container {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            margin: 0 auto 30px;
+        }
+
+        .wheel-outer-ring {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,
+                var(--silver) 0%,
+                var(--white) 25%,
+                var(--chrome) 50%,
+                var(--silver) 75%,
+                var(--white) 100%
+            );
+            box-shadow:
+                0 0 40px rgba(255, 105, 180, 0.5),
+                0 0 80px rgba(255, 20, 147, 0.3),
+                inset 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: chromeShine 3s linear infinite;
+        }
+
+        @keyframes chromeShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .wheel-outer-ring::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, var(--pale-pink), var(--baby-pink));
+        }
+
+        .wheel-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+        }
+
+        .wheel-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle at 30% 30%, white, var(--hot-pink));
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            box-shadow:
+                0 0 10px var(--hot-pink),
+                0 0 20px var(--magenta);
+            animation: dotGlow 1.5s ease-in-out infinite;
+        }
+
+        .wheel-dot:nth-child(even) {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes dotGlow {
+            0%, 100% { opacity: 0.6; transform: translate(var(--tx), var(--ty)) scale(1); }
+            50% { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1.4); }
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            background: conic-gradient(
+                from 0deg,
+                #ff69b4 0deg 60deg,
+                #ff1493 60deg 120deg,
+                #ffb6c1 120deg 180deg,
+                #dda0dd 180deg 240deg,
+                #ff69b4 240deg 300deg,
+                #e0218a 300deg 360deg
+            );
+            box-shadow:
+                inset 0 0 40px rgba(255, 255, 255, 0.5),
+                0 8px 32px rgba(255, 20, 147, 0.4);
+            overflow: hidden;
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background:
+                repeating-conic-gradient(
+                    from 0deg,
+                    transparent 0deg 58deg,
+                    rgba(255, 255, 255, 0.2) 58deg 60deg
+                ),
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 60%);
+        }
+
+        /* Glitter overlay on wheel */
+        .wheel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background-image:
+                radial-gradient(1px 1px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 40% 70%, white, transparent),
+                radial-gradient(1px 1px at 60% 20%, white, transparent),
+                radial-gradient(1px 1px at 80% 60%, white, transparent),
+                radial-gradient(1px 1px at 30% 80%, white, transparent),
+                radial-gradient(1px 1px at 70% 40%, white, transparent);
+            animation: wheelGlitter 2s linear infinite;
+        }
+
+        @keyframes wheelGlitter {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .wheel-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            margin-left: -50px;
+            text-align: center;
+            transform-origin: center center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-shadow:
+                0 0 10px var(--magenta),
+                1px 1px 0 var(--barbie-pink);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .wheel-label:nth-child(1) { transform: rotate(30deg) translateY(-115px) rotate(-30deg); }
+        .wheel-label:nth-child(2) { transform: rotate(90deg) translateY(-115px) rotate(-90deg); }
+        .wheel-label:nth-child(3) { transform: rotate(150deg) translateY(-115px) rotate(-150deg); }
+        .wheel-label:nth-child(4) { transform: rotate(210deg) translateY(-115px) rotate(-210deg); }
+        .wheel-label:nth-child(5) { transform: rotate(270deg) translateY(-115px) rotate(-270deg); }
+        .wheel-label:nth-child(6) { transform: rotate(330deg) translateY(-115px) rotate(-330deg); }
+
+        .wheel-label .icon {
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(180deg,
+                var(--white) 0%,
+                var(--silver) 50%,
+                var(--chrome) 100%
+            );
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow:
+                0 0 30px rgba(255, 105, 180, 0.5),
+                0 8px 24px rgba(255, 20, 147, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 1),
+                inset 0 -4px 12px rgba(192, 192, 192, 0.5);
+            z-index: 10;
+            border: 3px solid var(--white);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .wheel-center::before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 15%;
+            right: 15%;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), transparent);
+            border-radius: 50%;
+        }
+
+        .wheel-center:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow:
+                0 0 50px rgba(255, 105, 180, 0.7),
+                0 12px 36px rgba(255, 20, 147, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 1);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            filter: drop-shadow(0 4px 12px rgba(255, 20, 147, 0.6));
+        }
+
+        .wheel-pointer svg {
+            width: 44px;
+            height: 55px;
+        }
+
+        /* Y2K Glossy Button */
+        .spin-btn {
+            background: linear-gradient(180deg,
+                var(--hot-pink) 0%,
+                var(--magenta) 40%,
+                var(--barbie-pink) 100%
+            );
+            color: white;
+            border: 3px solid var(--white);
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Comfortaa', cursive;
+            letter-spacing: 3px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow:
+                0 6px 24px rgba(255, 20, 147, 0.5),
+                0 0 40px rgba(255, 105, 180, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -3px 8px rgba(139, 0, 139, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 2px 4px rgba(139, 0, 139, 0.5);
+        }
+
+        .spin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            border-radius: 50px 50px 50% 50%;
+        }
+
+        .spin-btn::after {
+            content: '✨';
+            position: absolute;
+            right: 20px;
+            animation: sparkleBtn 1s ease-in-out infinite;
+        }
+
+        @keyframes sparkleBtn {
+            0%, 100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 12px 36px rgba(255, 20, 147, 0.6),
+                0 0 60px rgba(255, 105, 180, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        /* Result Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 105, 180, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(180deg,
+                var(--white) 0%,
+                var(--pale-pink) 50%,
+                var(--baby-pink) 100%
+            );
+            border-radius: 28px;
+            padding: 40px 35px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow:
+                0 16px 48px rgba(255, 20, 147, 0.4),
+                0 0 60px rgba(255, 105, 180, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 1);
+            border: 3px solid var(--white);
+            animation: popIn 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal::before {
+            content: '✦ ✦ ✦';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--hot-pink);
+            font-size: 0.8rem;
+            letter-spacing: 10px;
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .modal-category {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            filter: drop-shadow(0 4px 15px rgba(255, 20, 147, 0.5));
+        }
+
+        .modal-category-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: var(--barbie-pink);
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .modal-fortune {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Comfortaa', cursive;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            color: white;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.4);
+        }
+
+        .modal-btn.primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+            border-radius: 25px 25px 50% 50%;
+        }
+
+        .modal-btn.primary:hover {
+            box-shadow: 0 8px 28px rgba(255, 20, 147, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .modal-btn.secondary {
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            color: var(--text-pink);
+            border: 2px solid var(--hot-pink);
+        }
+
+        .modal-btn.secondary:hover {
+            background: linear-gradient(180deg, var(--baby-pink), var(--hot-pink));
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .modal-header {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--text-pink);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-title .highlight {
+            color: var(--barbie-pink);
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        /* Fortune History */
+        .history-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 2px solid var(--white);
+            border-radius: 50px;
+            padding: 12px 20px;
+            color: var(--text-pink);
+            font-family: 'Comfortaa', cursive;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.3);
+        }
+
+        .history-toggle:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(255, 20, 147, 0.4);
+        }
+
+        .history-toggle .count {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .history-panel {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            width: 320px;
+            max-height: 400px;
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 3px solid var(--white);
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 50;
+            box-shadow: 0 12px 40px rgba(255, 20, 147, 0.35);
+            display: none;
+            overflow-y: auto;
+        }
+
+        .history-panel.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-panel h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--text-pink);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .history-empty {
+            color: var(--text-pink);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .history-item {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,182,193,0.5));
+            border: 2px solid var(--white);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.15);
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 20, 147, 0.25);
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .history-item-header .emoji {
+            font-size: 1.2rem;
+        }
+
+        .history-item-header .category {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--barbie-pink);
+            font-weight: 700;
+        }
+
+        .history-item-header .zodiac {
+            margin-left: auto;
+            font-size: 0.9rem;
+        }
+
+        .history-item-fortune {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .history-item-time {
+            font-size: 0.65rem;
+            color: var(--text-pink);
+            margin-top: 8px;
+        }
+
+        .history-clear {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 2px solid var(--hot-pink);
+            border-radius: 12px;
+            color: var(--text-pink);
+            font-family: 'Comfortaa', cursive;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .history-clear:hover {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            color: white;
+            border-color: var(--white);
+        }
+
+        /* Collection Tracker */
+        .collection-tracker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 2px solid var(--white);
+            border-radius: 20px;
+            padding: 12px 18px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.3);
+        }
+
+        .collection-tracker .label {
+            font-size: 0.7rem;
+            color: var(--text-pink);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .collection-icons {
+            display: flex;
+            gap: 3px;
+        }
+
+        .collection-icon {
+            font-size: 1rem;
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+        }
+
+        .collection-icon.collected {
+            opacity: 1;
+            filter: grayscale(0%) drop-shadow(0 0 8px var(--hot-pink));
+            animation: collectPop 0.5s ease-out;
+        }
+
+        @keyframes collectPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5) rotate(15deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .collection-complete {
+            display: none;
+            color: var(--barbie-pink);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .collection-complete.show {
+            display: block;
+            animation: twinkle 1s ease-in-out infinite;
+        }
+
+        /* Share Card Modal */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 105, 180, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .share-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .share-modal-content {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .share-card {
+            background: linear-gradient(180deg,
+                var(--white) 0%,
+                #fff5f5 30%,
+                #ffe4e6 70%,
+                #ffd1d6 100%
+            );
+            border-radius: 24px;
+            padding: 30px 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 12px 40px rgba(196, 30, 58, 0.3),
+                0 0 0 4px rgba(196, 30, 58, 0.1),
+                inset 0 2px 0 rgba(255, 255, 255, 1);
+            border: 3px solid #c41e3a;
+        }
+
+        /* Gold corner decorations */
+        .share-card::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
+        .share-card::before {
+            content: '🧧 ✦ 🧧';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--hot-pink);
+            font-size: 0.9rem;
+            letter-spacing: 8px;
+        }
+
+        .share-card-header {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--text-pink);
+            margin-bottom: 15px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .share-card-emoji {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 15px rgba(255, 20, 147, 0.5));
+        }
+
+        .share-card-category {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--barbie-pink);
+            margin-bottom: 5px;
+        }
+
+        .share-card-zodiac {
+            font-size: 0.95rem;
+            color: var(--text-pink);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .share-card-fortune {
+            font-size: 1rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .share-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid rgba(196, 30, 58, 0.2);
+            font-size: 0.7rem;
+            color: var(--text-pink);
+        }
+
+        .share-card-footer .credit {
+            font-weight: 700;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 14px 24px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Comfortaa', cursive;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-btn.copy {
+            background: linear-gradient(180deg, var(--lilac), #ba55d3);
+            color: white;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 16px rgba(186, 85, 211, 0.4);
+        }
+
+        .share-btn.download {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            color: white;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.4);
+        }
+
+        .share-btn.close {
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            color: var(--text-pink);
+            border: 2px solid var(--white);
+        }
+
+        .share-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+            border-radius: 25px 25px 50% 50%;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .share-btn.copied {
+            background: linear-gradient(180deg, #9370db, #8a2be2);
+        }
+
+        /* Red Envelope Reveal Animation */
+        .red-envelope-wrapper {
+            position: relative;
+            width: 100%;
+            perspective: 1000px;
+        }
+
+        .red-envelope {
+            position: relative;
+            width: 280px;
+            height: 380px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg,
+                #e63946 0%,
+                #c41e3a 30%,
+                #8b0000 100%
+            );
+            border-radius: 20px 20px 20px 20px;
+            box-shadow:
+                0 10px 40px rgba(196, 30, 58, 0.5),
+                inset 0 0 60px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .envelope-back::before {
+            content: '囍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            color: rgba(255, 215, 0, 0.15);
+            font-weight: bold;
+        }
+
+        /* Gold border decoration */
+        .envelope-back::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(180deg,
+                #e63946 0%,
+                #c41e3a 100%
+            );
+            border-radius: 20px 20px 0 0;
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ffd700 0%, #daa520 50%, #b8860b 100%);
+            border-radius: 50%;
+            box-shadow:
+                0 0 20px rgba(255, 215, 0, 0.6),
+                inset 0 -3px 10px rgba(139, 69, 19, 0.4),
+                inset 0 3px 10px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Gold seal Chinese character */
+        .envelope-flap::after {
+            content: '福';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #8b0000;
+            font-weight: bold;
+            text-shadow: 0 1px 0 rgba(255, 215, 0, 0.5);
+        }
+
+        .envelope-content {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.4s;
+            z-index: 5;
+        }
+
+        .red-envelope.opened .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .red-envelope.opened .envelope-content {
+            opacity: 1;
+        }
+
+        .envelope-fortune-text {
+            background: linear-gradient(180deg, #fff9e6 0%, #fff5d6 100%);
+            border-radius: 12px;
+            padding: 15px;
+            color: #8b0000;
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            position: relative;
+        }
+
+        .envelope-fortune-text::before {
+            content: '✦';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .envelope-category {
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+        }
+
+        .envelope-category-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #8b0000;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .envelope-zodiac {
+            font-size: 0.75rem;
+            color: #8b4513;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(218, 165, 32, 0.4);
+        }
+
+        .envelope-fortune-message {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #8b0000;
+        }
+
+        /* Envelope modal override */
+        .modal-overlay.envelope-mode .modal {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 20px;
+        }
+
+        .modal-overlay.envelope-mode .modal::before {
+            display: none;
+        }
+
+        .modal-overlay.envelope-mode .modal-header,
+        .modal-overlay.envelope-mode .modal-category,
+        .modal-overlay.envelope-mode .modal-category-name,
+        .modal-overlay.envelope-mode .modal-title,
+        .modal-overlay.envelope-mode .modal-fortune {
+            display: none;
+        }
+
+        .modal-overlay.envelope-mode .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .modal-overlay.envelope-mode .modal-btn.primary {
+            background: linear-gradient(180deg, #ffd700, #daa520);
+            color: #8b0000;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.5);
+        }
+
+        .modal-overlay.envelope-mode .modal-btn.secondary {
+            background: linear-gradient(180deg, #fff, #fff9e6);
+            color: #c41e3a;
+            border: 2px solid #ffd700;
+        }
+
+        .modal-overlay.envelope-mode .modal-btn.secondary:hover {
+            background: linear-gradient(180deg, #c41e3a, #8b0000);
+            color: #fff;
+        }
+
+        /* Floating gold coins animation for envelope */
+        .gold-coin {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1500;
+            font-size: 1.5rem;
+            animation: coinFall 2s ease-out forwards;
+        }
+
+        @keyframes coinFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0) rotate(45deg) scale(1);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Tap instruction */
+        .tap-instruction {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            animation: pulse 1.5s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .red-envelope.opened .tap-instruction {
+            display: none;
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            z-index: 1500;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Screen shake */
+        @keyframes screenShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: screenShake 0.3s ease-out;
+        }
+
+        /* Admin Panel */
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 100;
+        }
+
+        .admin-trigger:hover {
+            opacity: 0.1;
+            background: var(--hot-pink);
+            border-radius: 12px;
+        }
+
+        .admin-panel {
+            position: fixed;
+            bottom: 60px;
+            left: 10px;
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 3px solid var(--white);
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 1000;
+            width: 320px;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 12px 40px rgba(255, 20, 147, 0.35);
+            display: none;
+        }
+
+        .admin-panel.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .admin-panel h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--barbie-pink);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-panel .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-pink);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .admin-panel .close-btn:hover {
+            color: var(--magenta);
+        }
+
+        .admin-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+        }
+
+        .admin-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .admin-section h4 {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--text-pink);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .admin-panel select,
+        .admin-panel button {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            color: var(--text-dark);
+            font-family: 'Comfortaa', cursive;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .admin-panel select:hover,
+        .admin-panel button:hover {
+            border-color: var(--hot-pink);
+            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.2);
+        }
+
+        .admin-panel select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ff1493' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .admin-panel select option {
+            background: var(--light-pink);
+            color: var(--text-dark);
+        }
+
+        .admin-panel button.primary {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+            color: white;
+            border: 2px solid var(--white);
+        }
+
+        .admin-panel button.primary:hover {
+            box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .admin-panel button.danger {
+            background: linear-gradient(180deg, #ff6b6b, #ee5a5a);
+            color: white;
+            border: 2px solid var(--white);
+        }
+
+        .admin-panel button.danger:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .admin-toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .admin-toggle-row label {
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .admin-toggle {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: linear-gradient(180deg, var(--silver), var(--chrome));
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-toggle.active {
+            background: linear-gradient(180deg, var(--hot-pink), var(--magenta));
+        }
+
+        .admin-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(180deg, white, #f5f5f5);
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .admin-toggle.active::after {
+            transform: translateX(22px);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .preview-item {
+            background: linear-gradient(180deg, var(--white), var(--pale-pink));
+            border: 2px solid var(--white);
+            border-radius: 12px;
+            padding: 12px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.15);
+        }
+
+        .preview-item:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 16px rgba(255, 20, 147, 0.25);
+            border-color: var(--hot-pink);
+        }
+
+        .preview-item .emoji {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .preview-item .name {
+            font-size: 0.65rem;
+            color: var(--text-pink);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Credits */
+        .credits {
+            margin-top: 40px;
+            color: var(--white);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-shadow: 0 0 10px var(--hot-pink), 1px 1px 0 var(--magenta);
+        }
+
+        .credits span {
+            color: var(--white);
+            font-weight: 700;
+            text-shadow: 0 0 15px var(--white), 0 0 30px var(--hot-pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .zodiac-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .zodiac-btn {
+                font-size: 1.8rem;
+                padding: 12px 5px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 { font-size: 2.2rem; }
+
+            .zodiac-section {
+                padding: 20px 15px;
+            }
+
+            .zodiac-btn {
+                font-size: 1.6rem;
+                padding: 10px 4px;
+            }
+
+            .wheel-container {
+                width: 290px;
+                height: 290px;
+            }
+
+            .wheel-label {
+                font-size: 0.55rem;
+                gap: 3px;
+            }
+
+            .wheel-label:nth-child(1) { transform: rotate(30deg) translateY(-95px) rotate(-30deg); }
+            .wheel-label:nth-child(2) { transform: rotate(90deg) translateY(-95px) rotate(-90deg); }
+            .wheel-label:nth-child(3) { transform: rotate(150deg) translateY(-95px) rotate(-150deg); }
+            .wheel-label:nth-child(4) { transform: rotate(210deg) translateY(-95px) rotate(-210deg); }
+            .wheel-label:nth-child(5) { transform: rotate(270deg) translateY(-95px) rotate(-270deg); }
+            .wheel-label:nth-child(6) { transform: rotate(330deg) translateY(-95px) rotate(-330deg); }
+
+            .wheel-label .icon {
+                font-size: 1rem;
+            }
+
+            .history-toggle {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 15px;
+                font-size: 0.75rem;
+            }
+
+            .history-panel {
+                right: 15px;
+                bottom: 65px;
+                width: calc(100vw - 30px);
+                max-width: 320px;
+            }
+
+            .collection-tracker {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+
+            .collection-tracker .label {
+                display: none;
+            }
+
+            .collection-icon {
+                font-size: 0.9rem;
+            }
+
+            .share-card {
+                padding: 25px 20px;
+            }
+
+            .share-card-emoji {
+                font-size: 3rem;
+            }
+
+            .share-card-category {
+                font-size: 1.2rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .share-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .wheel-center {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .wheel-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .spin-btn {
+                padding: 15px 35px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="year-badge">Year of the Horse 2026</div>
+        <h1>Fortune Wheel</h1>
+        <p class="subtitle">Spin to reveal your 2026 destiny</p>
+
+        <!-- Zodiac Selection -->
+        <div class="zodiac-section y2k-card" id="zodiacSection">
+            <h2>Choose Your Zodiac Animal</h2>
+            <div class="zodiac-grid">
+                <button class="zodiac-btn" data-zodiac="rat" data-emoji="🐀"><span class="emoji-display">🐀</span><span>Rat</span></button>
+                <button class="zodiac-btn" data-zodiac="ox" data-emoji="🐂"><span class="emoji-display">🐂</span><span>Ox</span></button>
+                <button class="zodiac-btn" data-zodiac="tiger" data-emoji="🐅"><span class="emoji-display">🐅</span><span>Tiger</span></button>
+                <button class="zodiac-btn" data-zodiac="rabbit" data-emoji="🐰"><span class="emoji-display">🐰</span><span>Rabbit</span></button>
+                <button class="zodiac-btn" data-zodiac="dragon" data-emoji="🐉"><span class="emoji-display">🐉</span><span>Dragon</span></button>
+                <button class="zodiac-btn" data-zodiac="snake" data-emoji="🐍"><span class="emoji-display">🐍</span><span>Snake</span></button>
+                <button class="zodiac-btn" data-zodiac="horse" data-emoji="🐴"><span class="emoji-display">🐴</span><span>Horse</span></button>
+                <button class="zodiac-btn" data-zodiac="goat" data-emoji="🐐"><span class="emoji-display">🐐</span><span>Goat</span></button>
+                <button class="zodiac-btn" data-zodiac="monkey" data-emoji="🐵"><span class="emoji-display">🐵</span><span>Monkey</span></button>
+                <button class="zodiac-btn" data-zodiac="rooster" data-emoji="🐔"><span class="emoji-display">🐔</span><span>Rooster</span></button>
+                <button class="zodiac-btn" data-zodiac="dog" data-emoji="🐕"><span class="emoji-display">🐕</span><span>Dog</span></button>
+                <button class="zodiac-btn" data-zodiac="pig" data-emoji="🐷"><span class="emoji-display">🐷</span><span>Pig</span></button>
+            </div>
+        </div>
+
+        <!-- Wheel Section -->
+        <div class="wheel-section" id="wheelSection">
+            <div class="selected-zodiac" id="selectedZodiac">
+                <span class="emoji" id="selectedEmoji">🐉</span>
+                <span class="name" id="selectedName">Dragon</span>
+                <button class="change-btn" onclick="changeZodiac()">change</button>
+            </div>
+
+            <div class="wheel-container">
+                <div class="wheel-outer-ring">
+                    <div class="wheel-dots" id="wheelDots"></div>
+                </div>
+                <div class="wheel-pointer">
+                    <svg viewBox="0 0 40 55" fill="none">
+                        <defs>
+                            <linearGradient id="pointerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffffff"/>
+                                <stop offset="30%" style="stop-color:#c0c0c0"/>
+                                <stop offset="70%" style="stop-color:#ff69b4"/>
+                                <stop offset="100%" style="stop-color:#ff1493"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M20 55 L3 12 Q3 0 20 0 Q37 0 37 12 L20 55Z" fill="url(#pointerGrad)" stroke="white" stroke-width="2"/>
+                        <ellipse cx="20" cy="8" rx="10" ry="5" fill="rgba(255,255,255,0.5)"/>
+                        <circle cx="20" cy="14" r="5" fill="white"/>
+                        <circle cx="20" cy="14" r="2" fill="#ff69b4"/>
+                    </svg>
+                </div>
+                <div class="wheel" id="wheel">
+                    <div class="wheel-label"><span class="icon">💕</span>Love</div>
+                    <div class="wheel-label"><span class="icon">💰</span>Wealth</div>
+                    <div class="wheel-label"><span class="icon">💼</span>Career</div>
+                    <div class="wheel-label"><span class="icon">💪</span>Health</div>
+                    <div class="wheel-label"><span class="icon">🌟</span>Luck</div>
+                    <div class="wheel-label"><span class="icon">🎯</span>Goals</div>
+                </div>
+                <div class="wheel-center" onclick="spinWheel()" title="Spin!">🐴</div>
+            </div>
+
+            <button class="spin-btn" id="spinBtn" onclick="spinWheel()">
+                Spin the Wheel
+            </button>
+        </div>
+
+        <p class="credits">Made with love by <span>Claire</span></p>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal-overlay envelope-mode" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">2026 Year of the Horse</div>
+            <div class="modal-category" id="modalCategory">💕</div>
+            <div class="modal-title">
+                <span class="highlight" id="modalCategoryName">Love</span> Fortune
+                <br>for <span id="modalZodiacName">Dragon</span> <span id="modalZodiacEmoji">🐉</span>
+            </div>
+            <div class="modal-fortune" id="modalFortune">
+                Your fortune will appear here...
+            </div>
+
+            <!-- Red Envelope -->
+            <div class="red-envelope-wrapper">
+                <div class="red-envelope" id="redEnvelope" onclick="openEnvelope()">
+                    <div class="envelope-back"></div>
+                    <div class="envelope-content">
+                        <div class="envelope-fortune-text">
+                            <div class="envelope-category" id="envelopeCategory">💕</div>
+                            <div class="envelope-category-name" id="envelopeCategoryName">Love Fortune</div>
+                            <div class="envelope-zodiac">for <span id="envelopeZodiac">Dragon</span> <span id="envelopeZodiacEmoji">🐉</span></div>
+                            <div class="envelope-fortune-message" id="envelopeFortune">
+                                Your fortune will appear here...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="envelope-flap"></div>
+                    <div class="tap-instruction">TAP TO OPEN</div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn primary" onclick="openShareModal()">Share ✨</button>
+                <button class="modal-btn secondary" onclick="closeModalAndSpin()">Spin Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <button class="admin-trigger" onclick="toggleAdmin()" title="Admin"></button>
+    <div class="admin-panel" id="adminPanel">
+        <h3>
+            Admin Panel
+            <button class="close-btn" onclick="toggleAdmin()">×</button>
+        </h3>
+
+        <div class="admin-section">
+            <h4>Override Zodiac</h4>
+            <select id="adminZodiacSelect">
+                <option value="">-- Select Zodiac --</option>
+                <option value="rat">🐀 Rat</option>
+                <option value="ox">🐂 Ox</option>
+                <option value="tiger">🐅 Tiger</option>
+                <option value="rabbit">🐰 Rabbit</option>
+                <option value="dragon">🐉 Dragon</option>
+                <option value="snake">🐍 Snake</option>
+                <option value="horse">🐴 Horse</option>
+                <option value="goat">🐐 Goat</option>
+                <option value="monkey">🐵 Monkey</option>
+                <option value="rooster">🐔 Rooster</option>
+                <option value="dog">🐕 Dog</option>
+                <option value="pig">🐷 Pig</option>
+            </select>
+            <button class="primary" onclick="applyAdminZodiac()">Apply & Show Wheel</button>
+        </div>
+
+        <div class="admin-section">
+            <h4>Quick Spin to Category</h4>
+            <div class="preview-grid">
+                <div class="preview-item" onclick="forceCategory(0)"><span class="emoji">💕</span><span class="name">Love</span></div>
+                <div class="preview-item" onclick="forceCategory(1)"><span class="emoji">💰</span><span class="name">Wealth</span></div>
+                <div class="preview-item" onclick="forceCategory(2)"><span class="emoji">💼</span><span class="name">Career</span></div>
+                <div class="preview-item" onclick="forceCategory(3)"><span class="emoji">💪</span><span class="name">Health</span></div>
+                <div class="preview-item" onclick="forceCategory(4)"><span class="emoji">🌟</span><span class="name">Luck</span></div>
+                <div class="preview-item" onclick="forceCategory(5)"><span class="emoji">🎯</span><span class="name">Goals</span></div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h4>Settings</h4>
+            <div class="admin-toggle-row">
+                <label>Sound Effects</label>
+                <div class="admin-toggle active" id="soundToggle" onclick="toggleSound()"></div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h4>Data</h4>
+            <button onclick="resetCollection()">Reset Collection</button>
+            <button onclick="clearHistory()">Clear History</button>
+            <button class="danger" onclick="resetAll()">Reset Everything</button>
+        </div>
+    </div>
+
+    <!-- Collection Tracker -->
+    <div class="collection-tracker">
+        <span class="label">Collect:</span>
+        <div class="collection-icons">
+            <span class="collection-icon" data-category="Love">💕</span>
+            <span class="collection-icon" data-category="Wealth">💰</span>
+            <span class="collection-icon" data-category="Career">💼</span>
+            <span class="collection-icon" data-category="Health">💪</span>
+            <span class="collection-icon" data-category="Luck">🌟</span>
+            <span class="collection-icon" data-category="Goals">🎯</span>
+        </div>
+        <span class="collection-complete" id="collectionComplete">ALL!</span>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-modal-content">
+            <div class="share-card" id="shareCard">
+                <div class="share-card-header">2026 Year of the Horse 🐴</div>
+                <div class="share-card-emoji" id="shareEmoji">💕</div>
+                <div class="share-card-category" id="shareCategory">Love Fortune</div>
+                <div class="share-card-zodiac">for <span id="shareZodiac">Dragon</span> <span id="shareZodiacEmoji">🐉</span></div>
+                <div class="share-card-fortune" id="shareFortune">Your fortune text here...</div>
+                <div class="share-card-footer">
+                    <span>🧧 Fortune Wheel</span>
+                    <span class="credit">by Claire</span>
+                </div>
+            </div>
+            <div class="share-buttons">
+                <button class="share-btn copy" onclick="copyFortune()">
+                    <span>📋</span> Copy
+                </button>
+                <button class="share-btn download" onclick="downloadCard()">
+                    <span>📸</span> Save
+                </button>
+                <button class="share-btn close" onclick="closeShareModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Toggle & Panel -->
+    <button class="history-toggle" id="historyToggle" onclick="toggleHistory()">
+        <span>📜</span> History <span class="count" id="historyCount">0</span>
+    </button>
+
+    <div class="history-panel" id="historyPanel">
+        <h3>Your Fortunes ✦</h3>
+        <div id="historyList">
+            <div class="history-empty">No fortunes yet. Spin the wheel!</div>
+        </div>
+        <button class="history-clear" onclick="clearHistory()">Clear History</button>
+    </div>
+
+    <script>
+        // Create sparkle stars
+        function createSparkles() {
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.fontSize = (Math.random() * 16 + 10) + 'px';
+                sparkle.style.animationDelay = (Math.random() * 2) + 's';
+                document.body.appendChild(sparkle);
+            }
+        }
+        createSparkles();
+
+        // Create floating hearts and red envelopes
+        function createHearts() {
+            const hearts = ['♡', '♥', '❤', '💖', '💗'];
+            const envelopes = ['🧧'];
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 12) + 'px';
+                heart.style.color = `hsl(${330 + Math.random() * 30}, 100%, ${60 + Math.random() * 20}%)`;
+                heart.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                heart.style.animationDelay = (Math.random() * 10) + 's';
+                document.body.appendChild(heart);
+            }
+            // Add floating red envelopes
+            for (let i = 0; i < 5; i++) {
+                const envelope = document.createElement('div');
+                envelope.className = 'floating-heart';
+                envelope.textContent = '🧧';
+                envelope.style.left = Math.random() * 100 + 'vw';
+                envelope.style.fontSize = (Math.random() * 16 + 14) + 'px';
+                envelope.style.animationDuration = (Math.random() * 20 + 18) + 's';
+                envelope.style.animationDelay = (Math.random() * 12) + 's';
+                document.body.appendChild(envelope);
+            }
+        }
+        createHearts();
+
+        // Audio Context
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTick() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 900 + Math.random() * 300;
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        function playCelebration() {
+            if (!audioCtx) return;
+            const notes = [523, 659, 784, 1047];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = freq;
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.2);
+                }, i * 70);
+            });
+        }
+
+        // Collection tracking
+        function getCollection() {
+            const collection = localStorage.getItem('fortuneCollection');
+            return collection ? JSON.parse(collection) : [];
+        }
+
+        function addToCollection(category) {
+            const collection = getCollection();
+            if (!collection.includes(category)) {
+                collection.push(category);
+                localStorage.setItem('fortuneCollection', JSON.stringify(collection));
+                updateCollectionUI();
+
+                if (collection.length === 6) {
+                    setTimeout(() => {
+                        document.getElementById('collectionComplete').classList.add('show');
+                        createMegaConfetti();
+                    }, 500);
+                }
+            }
+        }
+
+        function updateCollectionUI() {
+            const collection = getCollection();
+            document.querySelectorAll('.collection-icon').forEach(icon => {
+                if (collection.includes(icon.dataset.category)) {
+                    icon.classList.add('collected');
+                }
+            });
+            if (collection.length === 6) {
+                document.getElementById('collectionComplete').classList.add('show');
+            }
+        }
+
+        updateCollectionUI();
+
+        // Create wheel dots
+        const dotsContainer = document.getElementById('wheelDots');
+        const numDots = 16;
+        const radius = 166;
+        for (let i = 0; i < numDots; i++) {
+            const angle = (i * 360 / numDots) * (Math.PI / 180);
+            const dot = document.createElement('div');
+            dot.className = 'wheel-dot';
+            const x = Math.cos(angle - Math.PI/2) * radius;
+            const y = Math.sin(angle - Math.PI/2) * radius;
+            dot.style.setProperty('--tx', (x - 5) + 'px');
+            dot.style.setProperty('--ty', (y - 5) + 'px');
+            dot.style.transform = `translate(${x - 5}px, ${y - 5}px)`;
+            dotsContainer.appendChild(dot);
+        }
+
+        const categories = [
+            { name: 'Love', icon: '💕', angle: 0 },
+            { name: 'Wealth', icon: '💰', angle: 60 },
+            { name: 'Career', icon: '💼', angle: 120 },
+            { name: 'Health', icon: '💪', angle: 180 },
+            { name: 'Luck', icon: '🌟', angle: 240 },
+            { name: 'Goals', icon: '🎯', angle: 300 }
+        ];
+
+        const zodiacData = {
+            rat: { name: 'Rat', emoji: '🐀' },
+            ox: { name: 'Ox', emoji: '🐂' },
+            tiger: { name: 'Tiger', emoji: '🐅' },
+            rabbit: { name: 'Rabbit', emoji: '🐰' },
+            dragon: { name: 'Dragon', emoji: '🐉' },
+            snake: { name: 'Snake', emoji: '🐍' },
+            horse: { name: 'Horse', emoji: '🐴' },
+            goat: { name: 'Goat', emoji: '🐐' },
+            monkey: { name: 'Monkey', emoji: '🐵' },
+            rooster: { name: 'Rooster', emoji: '🐔' },
+            dog: { name: 'Dog', emoji: '🐕' },
+            pig: { name: 'Pig', emoji: '🐷' }
+        };
+
+        const fortunes = {
+            Love: {
+                rat: "A chance encounter in spring will spark unexpected romance. Your charm is magnetic this year!",
+                ox: "Patience in love pays off—a deep, lasting connection awaits in the second half of 2026.",
+                tiger: "Your bold energy attracts admirers! Don't be afraid to make the first move this Horse year.",
+                rabbit: "Gentle romance blooms in quiet moments. A creative soul will capture your heart.",
+                dragon: "Passion runs high! An exciting whirlwind romance may sweep you off your feet.",
+                snake: "Mystery makes you irresistible. Someone has been admiring you from afar...",
+                horse: "Your year to gallop into love! Deep compatibility with fellow adventurous spirits.",
+                goat: "Artistic connections flourish. Look for love in galleries, concerts, or creative spaces.",
+                monkey: "Playful flirtation leads to something real. Laughter is your love language this year.",
+                rooster: "Confidence attracts! Dress your best—love may find you when you least expect it.",
+                dog: "Loyalty is rewarded. A friendship transforms into something beautifully romantic.",
+                pig: "Your warmth draws people in. Multiple admirers compete for your attention!"
+            },
+            Wealth: {
+                rat: "Your resourcefulness pays off! Unexpected income arrives through clever investments.",
+                ox: "Steady efforts compound into significant gains. A promotion or raise is on the horizon.",
+                tiger: "Bold financial moves succeed! Trust your instincts on that risky opportunity.",
+                rabbit: "Creative projects become profitable. Your artistic talents have monetary value.",
+                dragon: "Abundance flows your way! A major financial breakthrough awaits in summer.",
+                snake: "Strategic thinking multiplies your wealth. A secret opportunity reveals itself.",
+                horse: "Your year brings financial freedom! Multiple streams of income open up.",
+                goat: "Collaborative ventures bring prosperity. Partner with others for financial success.",
+                monkey: "Clever side hustles pay off big. Your innovative ideas attract investors.",
+                rooster: "Hard work gets noticed and rewarded. A lucrative opportunity comes through networking.",
+                dog: "Trustworthiness opens doors. Someone wants to invest in you or your idea.",
+                pig: "Generosity returns tenfold. Sharing wealth paradoxically increases it."
+            },
+            Career: {
+                rat: "Navigate office politics masterfully. A leadership position opens up for you.",
+                ox: "Your dedication finally gets recognized. Expect a significant career milestone.",
+                tiger: "Courage to pivot careers pays off. Your bold move inspires others.",
+                rabbit: "Diplomacy wins the day. You become the peacemaker everyone relies on.",
+                dragon: "Commanding presence earns respect. You're destined for an executive role.",
+                snake: "Strategic career moves position you perfectly. Your timing is impeccable.",
+                horse: "Career takes off at full gallop! Rapid advancement and exciting new opportunities.",
+                goat: "Creative vision gets implemented. Your unique perspective transforms your workplace.",
+                monkey: "Problem-solving skills shine. You become indispensable to your team.",
+                rooster: "Precision and organization impress superiors. A dream project lands in your lap.",
+                dog: "Reliability makes you the go-to person. Career stability and respect await.",
+                pig: "Collaborative success! Your team achieves something remarkable together."
+            },
+            Health: {
+                rat: "Mental agility stays sharp. Puzzle games and learning keep you vibrant.",
+                ox: "Stamina increases through consistent routines. Your strength surprises everyone.",
+                tiger: "Athletic pursuits bring joy and vitality. Try a new adventurous sport!",
+                rabbit: "Peaceful practices restore you. Meditation and gentle yoga transform your wellbeing.",
+                dragon: "Vibrant energy radiates from you. You inspire others to get healthier.",
+                snake: "Intuition guides health choices. Listen to your body's wisdom.",
+                horse: "Peak physical condition! Outdoor activities bring joy and energy.",
+                goat: "Holistic approaches work wonders. Explore alternative wellness practices.",
+                monkey: "Playful movement keeps you young. Dance, climb, and stay active!",
+                rooster: "Disciplined routines optimize health. Early rising brings extra vitality.",
+                dog: "Walking and outdoor time heal. Fresh air is your medicine.",
+                pig: "Nourishing foods bring balance. Cooking at home improves wellbeing."
+            },
+            Luck: {
+                rat: "Lucky numbers: 2, 8, 16. Wear blue on important days for extra fortune!",
+                ox: "Lucky numbers: 1, 9, 12. Earth tones ground your good fortune this year.",
+                tiger: "Lucky numbers: 3, 7, 10. Orange and gold amplify your natural luck!",
+                rabbit: "Lucky numbers: 4, 6, 11. Pink and green bring serendipitous moments.",
+                dragon: "Lucky numbers: 8, 9, 18. Red and gold maximize your incredible fortune!",
+                snake: "Lucky numbers: 2, 5, 13. Purple enhances your mysterious luck.",
+                horse: "Lucky numbers: 6, 8, 12. Your birth year brings maximum luck—wear red!",
+                goat: "Lucky numbers: 3, 6, 9. Lavender and soft colors attract good fortune.",
+                monkey: "Lucky numbers: 4, 8, 11. Gold accessories boost your playful luck.",
+                rooster: "Lucky numbers: 5, 7, 8. White and gold sharpen your fortune.",
+                dog: "Lucky numbers: 3, 4, 9. Earth tones and green bring loyal luck.",
+                pig: "Lucky numbers: 2, 5, 8. Warm colors attract abundance your way."
+            },
+            Goals: {
+                rat: "Think big but start small. Your incremental progress leads to massive success.",
+                ox: "Persistence is your superpower. That long-term goal? You'll achieve it this year.",
+                tiger: "Leap fearlessly toward your dreams. Hesitation is your only obstacle.",
+                rabbit: "Gentle persistence wins. Your patient approach achieves seemingly impossible goals.",
+                dragon: "Dream even bigger! The universe conspires to help you achieve greatness.",
+                snake: "Strategic planning ensures success. Break big goals into calculated steps.",
+                horse: "Sprint toward your ambitions! 2026 is YOUR year to achieve everything.",
+                goat: "Creative goals manifest beautifully. Share your vision with supportive allies.",
+                monkey: "Adaptability helps you achieve goals others thought impossible. Stay flexible!",
+                rooster: "Organization turns dreams into plans, and plans into reality. You've got this!",
+                dog: "Loyal commitment to your goals pays off. Don't give up—you're almost there.",
+                pig: "Shared goals multiply success. Collaborate and celebrate achievements together."
+            }
+        };
+
+        let selectedZodiac = null;
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        document.querySelectorAll('.zodiac-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                selectedZodiac = this.dataset.zodiac;
+                const data = zodiacData[selectedZodiac];
+
+                document.getElementById('selectedEmoji').textContent = data.emoji;
+                document.getElementById('selectedName').textContent = data.name;
+
+                document.getElementById('zodiacSection').style.display = 'none';
+                document.getElementById('wheelSection').classList.add('show');
+
+                setTimeout(() => {
+                    document.getElementById('wheelSection').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            });
+        });
+
+        function changeZodiac() {
+            document.getElementById('wheelSection').classList.remove('show');
+            document.getElementById('zodiacSection').style.display = 'block';
+            selectedZodiac = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            initAudio();
+
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+            spinBtn.textContent = 'Spinning...';
+
+            const wheel = document.getElementById('wheel');
+
+            const result = Math.floor(Math.random() * 6);
+
+            const segmentAngle = 60;
+            const targetAngle = result * segmentAngle + segmentAngle / 2;
+            const spins = 5 + Math.floor(Math.random() * 3);
+            const totalRotation = spins * 360 + (360 - targetAngle);
+
+            currentRotation += totalRotation;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            let tickCount = 0;
+            const maxTicks = 40;
+            const tickInterval = setInterval(() => {
+                playTick();
+                tickCount++;
+                if (tickCount >= maxTicks) {
+                    clearInterval(tickInterval);
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(tickInterval);
+                let slowTicks = 0;
+                const slowInterval = setInterval(() => {
+                    playTick();
+                    slowTicks++;
+                    if (slowTicks >= 8) clearInterval(slowInterval);
+                }, 200);
+            }, 3000);
+
+            setTimeout(() => {
+                document.body.classList.add('shake');
+                setTimeout(() => document.body.classList.remove('shake'), 300);
+
+                playCelebration();
+
+                showResult(result);
+                isSpinning = false;
+                spinBtn.disabled = false;
+                spinBtn.textContent = 'Spin the Wheel';
+            }, 4200);
+        }
+
+        let lastResult = null;
+
+        function showResult(categoryIndex) {
+            const category = categories[categoryIndex];
+            const fortune = fortunes[category.name][selectedZodiac];
+            const zodiac = zodiacData[selectedZodiac];
+
+            lastResult = { category, fortune, zodiac };
+
+            document.getElementById('modalCategory').textContent = category.icon;
+            document.getElementById('modalCategoryName').textContent = category.name;
+            document.getElementById('modalZodiacName').textContent = zodiac.name;
+            document.getElementById('modalZodiacEmoji').textContent = zodiac.emoji;
+
+            const fortuneEl = document.getElementById('modalFortune');
+            fortuneEl.textContent = '';
+            typeWriter(fortuneEl, fortune, 0);
+
+            // Populate red envelope
+            document.getElementById('envelopeCategory').textContent = category.icon;
+            document.getElementById('envelopeCategoryName').textContent = category.name + ' Fortune';
+            document.getElementById('envelopeZodiac').textContent = zodiac.name;
+            document.getElementById('envelopeZodiacEmoji').textContent = zodiac.emoji;
+            document.getElementById('envelopeFortune').textContent = fortune;
+
+            // Reset envelope state
+            document.getElementById('redEnvelope').classList.remove('opened');
+
+            document.getElementById('modalOverlay').classList.add('show');
+
+            saveFortune(category, zodiac, fortune);
+            addToCollection(category.name);
+        }
+
+        function openEnvelope() {
+            const envelope = document.getElementById('redEnvelope');
+            if (!envelope.classList.contains('opened')) {
+                envelope.classList.add('opened');
+                playEnvelopeSound();
+                createGoldCoins();
+                createEnhancedConfetti();
+            }
+        }
+
+        function createGoldCoins() {
+            const coins = ['🪙', '💰', '🧧', '✨'];
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const coin = document.createElement('div');
+                    coin.className = 'gold-coin';
+                    coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+                    coin.style.left = (30 + Math.random() * 40) + 'vw';
+                    coin.style.top = '30vh';
+                    coin.style.animationDuration = (1.5 + Math.random()) + 's';
+                    document.body.appendChild(coin);
+
+                    setTimeout(() => coin.remove(), 2500);
+                }, i * 80);
+            }
+        }
+
+        function playEnvelopeSound() {
+            if (!soundEnabled) return;
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Create a pleasant "opening" chime sound
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialDecayTo = 0.01;
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialDecayTo && gainNode.gain.exponentialDecayTo(0.01, audioContext.currentTime + 0.5);
+                gainNode.gain.setTargetAtTime(0.01, audioContext.currentTime + 0.3, 0.1);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                // Audio not supported
+            }
+        }
+
+        function typeWriter(element, text, index) {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                setTimeout(() => typeWriter(element, text, index + 1), 18);
+            }
+        }
+
+        function getHistory() {
+            const history = localStorage.getItem('fortuneHistory');
+            return history ? JSON.parse(history) : [];
+        }
+
+        function saveFortune(category, zodiac, fortune) {
+            const history = getHistory();
+            history.unshift({
+                category: category.name,
+                categoryIcon: category.icon,
+                zodiac: zodiac.name,
+                zodiacEmoji: zodiac.emoji,
+                fortune: fortune,
+                timestamp: Date.now()
+            });
+
+            if (history.length > 20) {
+                history.pop();
+            }
+
+            localStorage.setItem('fortuneHistory', JSON.stringify(history));
+            updateHistoryUI();
+        }
+
+        function updateHistoryUI() {
+            const history = getHistory();
+            const countEl = document.getElementById('historyCount');
+            const listEl = document.getElementById('historyList');
+
+            countEl.textContent = history.length;
+
+            if (history.length === 0) {
+                listEl.innerHTML = '<div class="history-empty">No fortunes yet. Spin the wheel!</div>';
+                return;
+            }
+
+            listEl.innerHTML = history.map(item => {
+                const date = new Date(item.timestamp);
+                const timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                return `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <span class="emoji">${item.categoryIcon}</span>
+                            <span class="category">${item.category}</span>
+                            <span class="zodiac">${item.zodiacEmoji}</span>
+                        </div>
+                        <div class="history-item-fortune">${item.fortune}</div>
+                        <div class="history-item-time">${timeStr}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleHistory() {
+            const panel = document.getElementById('historyPanel');
+            panel.classList.toggle('show');
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all fortune history?')) {
+                localStorage.removeItem('fortuneHistory');
+                updateHistoryUI();
+            }
+        }
+
+        updateHistoryUI();
+
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('historyPanel');
+            const toggle = document.getElementById('historyToggle');
+            if (panel.classList.contains('show') &&
+                !panel.contains(e.target) &&
+                !toggle.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
+
+        document.getElementById('shareModal').addEventListener('click', (e) => {
+            if (e.target.id === 'shareModal') {
+                closeShareModal();
+            }
+        });
+
+        let soundEnabled = true;
+
+        function toggleAdmin() {
+            document.getElementById('adminPanel').classList.toggle('show');
+        }
+
+        function applyAdminZodiac() {
+            const zodiac = document.getElementById('adminZodiacSelect').value;
+            if (!zodiac) {
+                alert('Please select a zodiac!');
+                return;
+            }
+
+            selectedZodiac = zodiac;
+            const data = zodiacData[zodiac];
+
+            document.getElementById('selectedEmoji').textContent = data.emoji;
+            document.getElementById('selectedName').textContent = data.name;
+
+            document.getElementById('zodiacSection').style.display = 'none';
+            document.getElementById('wheelSection').classList.add('show');
+            toggleAdmin();
+
+            setTimeout(() => {
+                document.getElementById('wheelSection').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+
+        function forceCategory(categoryIndex) {
+            if (!selectedZodiac) {
+                alert('Please select a zodiac first!');
+                return;
+            }
+
+            toggleAdmin();
+
+            setTimeout(() => {
+                initAudio();
+                playCelebration();
+                document.body.classList.add('shake');
+                setTimeout(() => document.body.classList.remove('shake'), 300);
+                showResult(categoryIndex);
+            }, 300);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundToggle').classList.toggle('active', soundEnabled);
+        }
+
+        const originalPlayTick = playTick;
+        playTick = function() {
+            if (soundEnabled) originalPlayTick();
+        };
+
+        const originalPlayCelebration = playCelebration;
+        playCelebration = function() {
+            if (soundEnabled) originalPlayCelebration();
+        };
+
+        function resetCollection() {
+            if (confirm('Reset your collection progress?')) {
+                localStorage.removeItem('fortuneCollection');
+                document.querySelectorAll('.collection-icon').forEach(icon => {
+                    icon.classList.remove('collected');
+                });
+                document.getElementById('collectionComplete').classList.remove('show');
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Reset ALL data? This will clear your collection and history.')) {
+                localStorage.removeItem('fortuneCollection');
+                localStorage.removeItem('fortuneHistory');
+                document.querySelectorAll('.collection-icon').forEach(icon => {
+                    icon.classList.remove('collected');
+                });
+                document.getElementById('collectionComplete').classList.remove('show');
+                updateHistoryUI();
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('adminPanel');
+            const trigger = document.querySelector('.admin-trigger');
+            if (panel.classList.contains('show') &&
+                !panel.contains(e.target) &&
+                e.target !== trigger) {
+                panel.classList.remove('show');
+            }
+        });
+
+        function createEnhancedConfetti() {
+            const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#dda0dd', '#ffffff', '#c0c0c0', '#e0218a'];
+            const shapes = ['♡', '★', '✦', '♥', '✧', '◇', '❤'];
+
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti-piece';
+                    confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-5vh';
+                    confetti.style.fontSize = (Math.random() * 18 + 10) + 'px';
+                    confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.textShadow = `0 0 10px ${confetti.style.color}`;
+
+                    const duration = Math.random() * 2 + 2.5;
+                    confetti.style.animation = `confettiFall ${duration}s ease-out forwards`;
+
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), duration * 1000);
+                }, i * 30);
+            }
+        }
+
+        function createMegaConfetti() {
+            playCelebration();
+            setTimeout(playCelebration, 300);
+
+            for (let wave = 0; wave < 3; wave++) {
+                setTimeout(() => createEnhancedConfetti(), wave * 500);
+            }
+        }
+
+        function openShareModal() {
+            if (!lastResult) return;
+
+            document.getElementById('shareEmoji').textContent = lastResult.category.icon;
+            document.getElementById('shareCategory').textContent = lastResult.category.name + ' Fortune';
+            document.getElementById('shareZodiac').textContent = lastResult.zodiac.name;
+            document.getElementById('shareZodiacEmoji').textContent = lastResult.zodiac.emoji;
+            document.getElementById('shareFortune').textContent = lastResult.fortune;
+
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('shareModal').classList.add('show');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('show');
+        }
+
+        function copyFortune() {
+            if (!lastResult) return;
+
+            const text = `🐴 2026 Year of the Horse Fortune ✨
+
+${lastResult.category.icon} ${lastResult.category.name} Fortune for ${lastResult.zodiac.name} ${lastResult.zodiac.emoji}
+
+"${lastResult.fortune}"
+
+💖 Get your fortune at Fortune Wheel`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.share-btn.copy');
+                btn.classList.add('copied');
+                btn.innerHTML = '<span>✓</span> Copied!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<span>📋</span> Copy';
+                }, 2000);
+            });
+        }
+
+        function downloadCard() {
+            const card = document.getElementById('shareCard');
+
+            if (typeof html2canvas !== 'undefined') {
+                html2canvas(card, {
+                    backgroundColor: '#ffb6c1',
+                    scale: 2
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'my-2026-fortune.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            } else {
+                alert('Take a screenshot of this card to save it!');
+            }
+        }
+
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('modalOverlay').classList.remove('show');
+            // Reset envelope for next time
+            setTimeout(() => {
+                document.getElementById('redEnvelope').classList.remove('opened');
+            }, 300);
+        }
+
+        function closeModalAndSpin() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            // Reset envelope for next time
+            setTimeout(() => {
+                document.getElementById('redEnvelope').classList.remove('opened');
+            }, 300);
+            setTimeout(spinWheel, 300);
+        }
+    </script>
+</body>
+</html>
